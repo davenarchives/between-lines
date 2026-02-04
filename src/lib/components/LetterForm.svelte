@@ -1,9 +1,7 @@
 <!--
   LetterForm Component
   
-  A form for creating new letters with optional music attachment.
-  Handles validation, submission, and displays the shareable link after success.
-  
+  Simplified form for creating letters with theme selection.
   Uses Svelte 5 runes for state management.
 -->
 
@@ -14,52 +12,21 @@
   } from "$lib/utils/letterService.js";
   import "$lib/styles/letter-form.css";
 
+  // Props for theme selection (bound to parent)
+  let {
+    envelopeTheme = $bindable("envelope-red"),
+    letterTheme = $bindable("letter-sticky"),
+  } = $props();
+
   // Form state using Svelte 5 $state rune
-  let title = $state("");
-  let body = $state("");
   let recipientName = $state("");
-  /** @type {File | null} */
-  let audioFile = $state(null);
+  let body = $state("");
+  let selectedMusic = $state("");
   let shareableLink = $state("");
   let isSubmitted = $state(false);
   let isLoading = $state(false);
   /** @type {string | null} */
   let errorMessage = $state(null);
-
-  /**
-   * Handle file input change
-   * Validates that the file is an audio file
-   */
-  function handleFileChange(/** @type {Event} */ event) {
-    const input = /** @type {HTMLInputElement} */ (event.target);
-    const file = input.files?.[0];
-
-    if (file) {
-      // Validate file type
-      if (!file.type.startsWith("audio/")) {
-        errorMessage = "Please select a valid audio file (MP3)";
-        audioFile = null;
-        return;
-      }
-
-      // Check file size (max 10MB)
-      if (file.size > 10 * 1024 * 1024) {
-        errorMessage = "Audio file must be less than 10MB";
-        audioFile = null;
-        return;
-      }
-
-      audioFile = file;
-      errorMessage = null;
-    }
-  }
-
-  /**
-   * Clear the selected audio file
-   */
-  function clearAudioFile() {
-    audioFile = null;
-  }
 
   /**
    * Handle form submission
@@ -69,32 +36,31 @@
     event.preventDefault();
 
     // Basic validation
-    if (!title.trim()) {
-      errorMessage = "Please enter a title";
+    if (!body.trim()) {
+      errorMessage = "Please write a message";
       return;
     }
 
-    if (!body.trim()) {
-      errorMessage = "Please write your letter";
-      return;
-    }
+    errorMessage = null;
+    isLoading = true;
 
     try {
-      isLoading = true;
-      errorMessage = null;
-
       // Create the letter
       const letterId = await createLetter(
         {
-          title: title.trim(),
+          title: "Letter", // Default title
           body: body.trim(),
-          recipientName: recipientName.trim(),
+          recipientName: recipientName.trim() || null,
+          envelopeTheme: envelopeTheme,
+          letterTheme: letterTheme,
+          musicUrl: selectedMusic || null,
         },
-        audioFile,
-      );
+        null,
+      ); // No audio file
 
-      // Generate the shareable link (Standard URL)
-      shareableLink = generateShareableUrl(letterId);
+      // Generate shareable link
+      const link = generateShareableUrl(letterId);
+      shareableLink = link;
       isSubmitted = true;
     } catch (error) {
       console.error("Error creating letter:", error);
@@ -105,180 +71,111 @@
   }
 
   /**
-   * Copy the shareable link to clipboard
+   * Copy link to clipboard
    */
-  async function copyLink() {
+  async function copyToClipboard() {
     try {
       await navigator.clipboard.writeText(shareableLink);
+      alert("Link copied to clipboard!");
     } catch (error) {
-      console.error("Failed to copy link:", error);
+      console.error("Failed to copy:", error);
     }
   }
 
   /**
-   * Reset form to create another letter
+   * Reset form
    */
-  function createAnother() {
-    title = "";
-    body = "";
+  function resetForm() {
     recipientName = "";
-    audioFile = null;
+    body = "";
+    selectedMusic = "";
     shareableLink = "";
     isSubmitted = false;
     errorMessage = null;
   }
 </script>
 
-<div class="form-container">
-  {#if !isSubmitted}
-    <!-- Letter creation form -->
-    <form onsubmit={handleSubmit} class="letter-form">
-      <div class="form-header">
-        <h2 class="form-title">Write Your Letter</h2>
-        <p class="form-subtitle">Share your thoughts with someone special</p>
+{#if isSubmitted}
+  <!--Success State -->
+  <div class="form-card success-card">
+    <div class="success-content">
+      <i class="fa-solid fa-circle-check success-icon"></i>
+      <h2 class="success-title">Letter Created!</h2>
+      <p class="success-text">Share this link with your recipient:</p>
+
+      <div class="link-container">
+        <input type="text" readonly value={shareableLink} class="link-input" />
+        <button
+          type="button"
+          onclick={copyToClipboard}
+          class="copy-button"
+          aria-label="Copy link to clipboard"
+        >
+          <i class="fa-solid fa-copy"></i>
+        </button>
       </div>
 
-      <!-- Title input -->
+      <button type="button" onclick={resetForm} class="new-letter-button">
+        Create Another Letter
+      </button>
+    </div>
+  </div>
+{:else}
+  <!-- Letter Form -->
+  <form class="form-card" onsubmit={handleSubmit}>
+    <div class="form-content">
+      <!-- Recipient Field -->
       <div class="form-group">
-        <label for="title" class="label">Letter Title</label>
         <input
           type="text"
-          id="title"
-          bind:value={title}
-          placeholder="Give your letter a title"
-          class="input"
-          maxlength="100"
-        />
-      </div>
-
-      <!-- Recipient name (optional) -->
-      <div class="form-group">
-        <label for="recipient" class="label">
-          Recipient Name
-          <span class="optional">(optional)</span>
-        </label>
-        <input
-          type="text"
-          id="recipient"
           bind:value={recipientName}
-          placeholder="Who is this letter for?"
-          class="input"
-          maxlength="50"
+          placeholder="Recipient"
+          class="form-input recipient-input"
         />
       </div>
 
-      <!-- Letter body -->
+      <!-- Message Field -->
       <div class="form-group">
-        <label for="body" class="label">Your Letter</label>
         <textarea
-          id="body"
           bind:value={body}
-          placeholder="Write your heart out..."
-          class="textarea"
-          rows="10"
+          placeholder="Message"
+          rows="6"
+          class="form-input message-input"
+          required
         ></textarea>
       </div>
 
-      <!-- Music upload (optional) -->
+      <!-- Music Selection -->
       <div class="form-group">
-        <label for="audio" class="label">
-          Attach Music
-          <span class="optional">(optional)</span>
-        </label>
-
-        {#if audioFile}
-          <div class="file-selected">
-            <span class="file-name">{audioFile.name}</span>
-            <button type="button" onclick={clearAudioFile} class="clear-file">
-              Remove
-            </button>
-          </div>
-        {:else}
-          <div class="file-upload">
-            <input
-              type="file"
-              id="audio"
-              accept="audio/*"
-              onchange={handleFileChange}
-              class="file-input"
-            />
-            <label for="audio" class="file-label">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M9 18V5l12-2v13" />
-                <circle cx="6" cy="18" r="3" />
-                <circle cx="18" cy="16" r="3" />
-              </svg>
-              <span>Choose an MP3 file</span>
-            </label>
-          </div>
-        {/if}
-        <p class="hint">Add a song to play when they open your letter</p>
+        <div class="music-selector">
+          <i class="fa-brands fa-spotify spotify-icon"></i>
+          <select bind:value={selectedMusic} class="music-select">
+            <option value="">Select a music</option>
+            <option value="lofi-1">Lo-Fi Beats #1</option>
+            <option value="lofi-2">Chill Vibes</option>
+            <option value="lofi-3">Study Session</option>
+            <option value="acoustic-1">Acoustic Dreams</option>
+            <option value="piano-1">Piano Ballad</option>
+          </select>
+          <i class="fa-solid fa-chevron-down dropdown-icon"></i>
+        </div>
       </div>
 
-      <!-- Error message -->
+      <!-- Error Message -->
       {#if errorMessage}
         <div class="error-message">
+          <i class="fa-solid fa-circle-exclamation"></i>
           {errorMessage}
         </div>
       {/if}
 
-      <!-- Submit button -->
+      <!-- Submit Button -->
       <button type="submit" class="submit-button" disabled={isLoading}>
-        {#if isLoading}
-          <span class="loading-spinner"></span>
-          Creating...
-        {:else}
-          Create Letter
+        {isLoading ? "Creating..." : "Send Letter"}
+        {#if !isLoading}
+          <i class="fa-solid fa-paper-plane"></i>
         {/if}
       </button>
-    </form>
-  {:else}
-    <!-- Success state with shareable link -->
-    <div class="success-container">
-      <div class="success-icon">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="48"
-          height="48"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
-      </div>
-
-      <h2 class="success-title">Letter Created</h2>
-      <p class="success-subtitle">Your letter is ready to be shared</p>
-
-      <!-- Shareable link display -->
-      <div class="share-box">
-        <input type="text" value={shareableLink} readonly class="share-input" />
-        <button onclick={copyLink} class="copy-button"> Copy Link </button>
-      </div>
-
-      <!-- Action buttons -->
-      <div class="success-actions">
-        <a href={shareableLink} target="_blank" class="preview-link">
-          Preview Letter
-        </a>
-        <button onclick={createAnother} class="create-another">
-          Write Another Letter
-        </button>
-      </div>
     </div>
-  {/if}
-</div>
+  </form>
+{/if}
