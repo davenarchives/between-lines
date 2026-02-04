@@ -1,76 +1,42 @@
 /**
- * Letter Service (Mock Version for Testing)
+ * Letter Service
  * 
- * This version stores letters in localStorage instead of Firebase.
- * Replace with the Firebase version when ready to deploy.
+ * Handles interaction with FirebaseFirestore and Storage.
  */
 
-const STORAGE_KEY = 'between_lines_letters';
+import { db, storage } from "../firebase.js";
+import { collection, addDoc, getDoc, doc } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 /**
- * Get all letters from localStorage
- */
-function getStoredLetters() {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : {};
-}
-
-/**
- * Save letters to localStorage
- */
-function saveLetters(letters) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(letters));
-}
-
-/**
- * Generates a unique ID for letters
- */
-function generateUniqueId() {
-    return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-}
-
-/**
- * Creates a new letter (stored in localStorage)
+ * Creates a new letter
  * @param {Object} letterData - The letter data (title, body, recipientName)
  * @param {File|null} audioFile - Optional audio file to attach
  * @returns {Promise<string>} - The document ID of the created letter
  */
 export async function createLetter(letterData, audioFile = null) {
-    const letterId = generateUniqueId();
     let audioUrl = null;
 
-    // Convert audio file to base64 for localStorage storage
+    // 1. Upload audio file if it exists
     if (audioFile) {
-        audioUrl = await fileToBase64(audioFile);
+        // Create a unique reference including timestamp
+        const timestamp = Date.now();
+        const storageRef = ref(storage, `audio/${timestamp}_${audioFile.name}`);
+
+        const snapshot = await uploadBytes(storageRef, audioFile);
+        audioUrl = await getDownloadURL(snapshot.ref);
     }
 
-    const letter = {
-        id: letterId,
+    // 2. Save letter document to Firestore
+    const docRef = await addDoc(collection(db, "letters"), {
         title: letterData.title,
         body: letterData.body,
         recipientName: letterData.recipientName || null,
         audioUrl: audioUrl,
         createdAt: new Date().toISOString(),
-    };
-
-    // Store in localStorage
-    const letters = getStoredLetters();
-    letters[letterId] = letter;
-    saveLetters(letters);
-
-    return letterId;
-}
-
-/**
- * Convert a file to base64 string
- */
-function fileToBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
     });
+
+    return docRef.id;
 }
 
 /**
@@ -79,13 +45,15 @@ function fileToBase64(file) {
  * @returns {Promise<Object|null>} - The letter data or null if not found
  */
 export async function getLetter(id) {
-    const letters = getStoredLetters();
-    const letter = letters[id];
+    const docRef = doc(db, "letters", id);
+    const docSnap = await getDoc(docRef);
 
-    if (letter) {
+    if (docSnap.exists()) {
+        const data = docSnap.data();
         return {
-            ...letter,
-            createdAt: new Date(letter.createdAt),
+            id: docSnap.id,
+            ...data,
+            createdAt: new Date(data.createdAt),
         };
     }
 
