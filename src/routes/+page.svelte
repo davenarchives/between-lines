@@ -1,77 +1,147 @@
 <!--
-  Create Page
+  Landing Page / Hero
   Route: /
 -->
-<script>
-    import LetterForm from "$lib/components/LetterForm.svelte";
-</script>
 
-<div class="create-page">
-    <!-- Minimal header -->
-    <header class="header">
-        <h1 class="logo">Between Lines</h1>
-        <p class="tagline">Write letters that feel like moments</p>
-    </header>
-
-    <!-- Main content area -->
-    <main class="main">
-        <LetterForm />
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <p>
-            Your letters are stored securely and can only be accessed via their
-            unique link.
-        </p>
-    </footer>
+<div class="hero-page">
+    <div class="hero-content">
+        <img src="/logo.png" alt="Between Lines" class="hero-logo" />
+        <p class="hero-tagline">For things worth saying.</p>
+        <a href="/create" class="cta-button">
+            Send a letter
+            <i class="fa-solid fa-paper-plane plane-icon"></i>
+        </a>
+    </div>
 </div>
 
 <style>
-    .create-page {
+    .hero-page {
         min-height: 100vh;
         background: linear-gradient(
             135deg,
-            #faf5ff 0%,
-            #f0f9ff 50%,
-            #f5f3ff 100%
+            #3986d0 0%,
+            #4c9aae 50%,
+            #659883 100%
         );
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
     }
 
-    .header {
-        padding: 2rem 1rem;
+    .hero-content {
         text-align: center;
+        max-width: 600px;
+        animation: fadeIn 1s ease-out;
     }
 
-    .logo {
-        font-size: 1.5rem;
-        font-weight: 500;
-        color: #1f2937;
-        letter-spacing: -0.025em;
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
-    .tagline {
-        font-size: 0.875rem;
-        color: #6b7280;
-        margin-top: 0.25rem;
+    .hero-logo {
+        max-width: 650px;
+        width: 100%;
+        height: auto;
+        filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+        margin-bottom: 3rem;
+        animation: floatIn 1.2s ease-out;
     }
 
-    .main {
-        flex: 1;
-        padding: 0 1rem 2rem;
+    @keyframes floatIn {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
-    .footer {
-        padding: 1.5rem 1rem;
-        text-align: center;
+    .hero-tagline {
+        font-family: "Caveat", cursive;
+        font-size: 2.5rem;
+        font-style: italic;
+        color: white;
+        margin-bottom: 3rem;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        font-weight: 600;
+        letter-spacing: 0.5px;
     }
 
-    .footer p {
-        font-size: 0.75rem;
-        color: #9ca3af;
-        max-width: 24rem;
-        margin: 0 auto;
+    .cta-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 2.5rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: white;
+        background: linear-gradient(135deg, #5ddfc9, #4ac9c3);
+        border: none;
+        border-radius: 50px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow:
+            0 4px 15px rgba(0, 0, 0, 0.2),
+            0 1px 3px rgba(255, 255, 255, 0.3) inset;
+        animation: slideUp 1s 0.3s ease-out backwards;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .cta-button:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow:
+            0 8px 25px rgba(0, 0, 0, 0.3),
+            0 1px 3px rgba(255, 255, 255, 0.4) inset;
+    }
+
+    .cta-button:active {
+        transform: translateY(-1px) scale(1.02);
+    }
+
+    .plane-icon {
+        font-size: 1.25rem;
+        transition: transform 0.3s ease;
+    }
+
+    .cta-button:hover .plane-icon {
+        transform: translateX(4px) translateY(-4px);
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+        .hero-logo {
+            max-width: 350px;
+        }
+
+        .hero-tagline {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            padding: 0.875rem 2rem;
+            font-size: 1.125rem;
+        }
     }
 </style>

@@ -11,32 +11,34 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 /**
  * Creates a new letter
  * @param {Omit<Letter, "id" | "createdAt" | "audioUrl">} letterData - The letter data
+ * @param {Omit<Letter, "id" | "createdAt" | "audioUrl" | "opened">} letterData - The letter data
  * @param {File|null} audioFile - Optional audio file to attach
  * @returns {Promise<string>} - The document ID of the created letter
  */
 export async function createLetter(letterData, audioFile = null) {
     let audioUrl = null;
 
-    // 1. Upload audio file if it exists
+    // If there's an audio file, upload it to Firebase Storage
     if (audioFile) {
-        // Create a unique reference including timestamp
-        const timestamp = Date.now();
-        const storageRef = ref(storage, `audio/${timestamp}_${audioFile.name}`);
-
-        const snapshot = await uploadBytes(storageRef, audioFile);
-        audioUrl = await getDownloadURL(snapshot.ref);
+        const storageRef = ref(storage, `audio/${Date.now()}_${audioFile.name}`);
+        await uploadBytes(storageRef, audioFile);
+        audioUrl = await getDownloadURL(storageRef);
     }
 
-    // 2. Save letter document to Firestore
-    const docRef = await addDoc(collection(db, "letters"), {
-        title: letterData.title,
+    // Create the letter document in Firestore
+    const letterRef = await addDoc(collection(db, 'letters'), {
+        title: letterData.title || 'Untitled',
         body: letterData.body,
         recipientName: letterData.recipientName || null,
+        envelopeTheme: letterData.envelopeTheme || 'envelope-red',
+        letterTheme: letterData.letterTheme || 'letter-sticky',
+        musicUrl: letterData.musicUrl || null,
         audioUrl: audioUrl,
         createdAt: new Date().toISOString(),
+        opened: false
     });
 
-    return docRef.id;
+    return letterRef.id;
 }
 
 /**
@@ -45,6 +47,9 @@ export async function createLetter(letterData, audioFile = null) {
  * @property {string} title
  * @property {string} body
  * @property {string|null} recipientName
+ * @property {string} envelopeTheme
+ * @property {string} letterTheme
+ * @property {string|null} musicUrl
  * @property {string|null} audioUrl
  * @property {Date} createdAt
  */
