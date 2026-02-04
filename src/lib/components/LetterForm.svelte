@@ -12,23 +12,25 @@
     createLetter,
     generateShareableUrl,
   } from "$lib/utils/letterService.js";
+  import "$lib/styles/letter-form.css";
 
   // Form state using Svelte 5 $state rune
   let title = $state("");
   let body = $state("");
   let recipientName = $state("");
-  let audioFile = $state(null);
+  let audioFile = $state(/** @type {File | null} */ (null));
   let shareableLink = $state("");
   let isSubmitted = $state(false);
   let isLoading = $state(false);
-  let errorMessage = $state(null);
+  let errorMessage = $state(/** @type {string | null} */ (null));
 
   /**
    * Handle file input change
    * Validates that the file is an audio file
    */
-  function handleFileChange(event) {
-    const file = event.target.files[0];
+  function handleFileChange(/** @type {Event} */ event) {
+    const input = /** @type {HTMLInputElement} */ (event.target);
+    const file = input.files?.[0];
 
     if (file) {
       // Validate file type
@@ -61,7 +63,7 @@
    * Handle form submission
    * Creates the letter and generates a shareable link
    */
-  async function handleSubmit(event) {
+  async function handleSubmit(/** @type {SubmitEvent} */ event) {
     event.preventDefault();
 
     // Basic validation
@@ -278,290 +280,3 @@
     </div>
   {/if}
 </div>
-
-<style>
-  .form-container {
-    max-width: 32rem;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-  }
-
-  .letter-form {
-    background: white;
-    border-radius: 1rem;
-    padding: 2rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  }
-
-  .form-header {
-    margin-bottom: 2rem;
-    text-align: center;
-  }
-
-  .form-title {
-    font-size: 1.5rem;
-    font-weight: 500;
-    color: #1f2937;
-    margin-bottom: 0.5rem;
-  }
-
-  .form-subtitle {
-    font-size: 0.875rem;
-    color: #6b7280;
-  }
-
-  .form-group {
-    margin-bottom: 1.5rem;
-  }
-
-  .label {
-    display: block;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #374151;
-    margin-bottom: 0.5rem;
-  }
-
-  .optional {
-    font-weight: 400;
-    color: #9ca3af;
-  }
-
-  .input,
-  .textarea {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    font-family: inherit;
-    transition: border-color 0.2s;
-  }
-
-  .input:focus,
-  .textarea:focus {
-    outline: none;
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-  }
-
-  .textarea {
-    resize: vertical;
-    min-height: 200px;
-    line-height: 1.6;
-  }
-
-  .file-upload {
-    position: relative;
-  }
-
-  .file-input {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-
-  .file-label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    padding: 1rem;
-    border: 2px dashed #e5e7eb;
-    border-radius: 0.5rem;
-    color: #6b7280;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .file-label:hover {
-    border-color: #6366f1;
-    color: #6366f1;
-    background: rgba(99, 102, 241, 0.05);
-  }
-
-  .file-selected {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.75rem 1rem;
-    background: #f3f4f6;
-    border-radius: 0.5rem;
-  }
-
-  .file-name {
-    font-size: 0.875rem;
-    color: #374151;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .clear-file {
-    font-size: 0.75rem;
-    color: #ef4444;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-
-  .hint {
-    font-size: 0.75rem;
-    color: #9ca3af;
-    margin-top: 0.5rem;
-  }
-
-  .error-message {
-    padding: 0.75rem 1rem;
-    background: #fef2f2;
-    border: 1px solid #fecaca;
-    border-radius: 0.5rem;
-    color: #dc2626;
-    font-size: 0.875rem;
-    margin-bottom: 1rem;
-  }
-
-  .submit-button {
-    width: 100%;
-    padding: 1rem;
-    background: #1f2937;
-    color: white;
-    border: none;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    transition: background 0.2s;
-  }
-
-  .submit-button:hover:not(:disabled) {
-    background: #374151;
-  }
-
-  .submit-button:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-
-  .loading-spinner {
-    width: 1rem;
-    height: 1rem;
-    border: 2px solid transparent;
-    border-top-color: white;
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-  }
-
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Success state styles */
-  .success-container {
-    text-align: center;
-    padding: 3rem 1rem;
-  }
-
-  .success-icon {
-    width: 4rem;
-    height: 4rem;
-    margin: 0 auto 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #ecfdf5;
-    color: #10b981;
-    border-radius: 50%;
-  }
-
-  .success-title {
-    font-size: 1.5rem;
-    font-weight: 500;
-    color: #1f2937;
-    margin-bottom: 0.5rem;
-  }
-
-  .success-subtitle {
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin-bottom: 2rem;
-  }
-
-  .share-box {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .share-input {
-    flex: 1;
-    padding: 0.75rem 1rem;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
-    background: #f9fafb;
-    color: #374151;
-  }
-
-  .copy-button {
-    padding: 0.75rem 1.25rem;
-    background: #6366f1;
-    color: white;
-    border: none;
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s;
-    white-space: nowrap;
-  }
-
-  .copy-button:hover {
-    background: #4f46e5;
-  }
-
-  .success-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .preview-link {
-    padding: 0.75rem 1rem;
-    background: #f3f4f6;
-    color: #374151;
-    text-decoration: none;
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: background 0.2s;
-  }
-
-  .preview-link:hover {
-    background: #e5e7eb;
-  }
-
-  .create-another {
-    padding: 0.75rem 1rem;
-    background: none;
-    color: #6366f1;
-    border: 1px solid #6366f1;
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .create-another:hover {
-    background: #6366f1;
-    color: white;
-  }
-</style>
