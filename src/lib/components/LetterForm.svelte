@@ -18,11 +18,13 @@
   let title = $state("");
   let body = $state("");
   let recipientName = $state("");
-  let audioFile = $state(/** @type {File | null} */ (null));
+  /** @type {File | null} */
+  let audioFile = $state(null);
   let shareableLink = $state("");
   let isSubmitted = $state(false);
   let isLoading = $state(false);
-  let errorMessage = $state(/** @type {string | null} */ (null));
+  /** @type {string | null} */
+  let errorMessage = $state(null);
 
   /**
    * Handle file input change
