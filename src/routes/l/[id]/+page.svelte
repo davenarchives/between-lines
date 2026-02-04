@@ -9,15 +9,28 @@
     import LetterView from "$lib/components/LetterView.svelte";
     import MusicPlayer from "$lib/components/MusicPlayer.svelte";
     import { getLetter } from "$lib/utils/letterService.js";
+    import "$lib/styles/view-page.css";
 
     // Get ID from route params
     let id = $derived($page.params.id);
 
     // State using Svelte 5 $state runes
+    /**
+     * @typedef {Object} Letter
+     * @property {string} title
+     * @property {string} body
+     * @property {string|null} recipientName
+     * @property {Date} createdAt
+     * @property {string|null} [audioUrl]
+     */
+
+    /** @type {Letter | null} */
     let currentLetter = $state(null);
     let isLoading = $state(true);
+    /** @type {string | null} */
     let errorMessage = $state(null);
     let isOpened = $state(false);
+    /** @type {import('$lib/components/MusicPlayer.svelte').default | null} */
     let musicPlayerRef = $state(null);
 
     // Re-fetch when ID changes
@@ -30,7 +43,7 @@
     /**
      * Fetch the letter data
      */
-    async function fetchLetter(letterId) {
+    async function fetchLetter(/** @type {string} */ letterId) {
         if (!letterId) {
             errorMessage = "Invalid letter link";
             isLoading = false;
@@ -97,7 +110,7 @@
     {:else if currentLetter}
         <OpenOverlay
             letterTitle={currentLetter.title}
-            recipientName={currentLetter.recipientName}
+            recipientName={currentLetter.recipientName ?? ""}
             isVisible={!isOpened}
             onopen={handleLetterOpen}
         />
@@ -105,7 +118,7 @@
         <LetterView
             title={currentLetter.title}
             body={currentLetter.body}
-            recipientName={currentLetter.recipientName}
+            recipientName={currentLetter.recipientName ?? ""}
             createdAt={currentLetter.createdAt}
             isVisible={isOpened}
         />
@@ -127,92 +140,3 @@
         {/if}
     {/if}
 </div>
-
-<style>
-    .view-page {
-        min-height: 100vh;
-        background: linear-gradient(
-            135deg,
-            #faf5ff 0%,
-            #f0f9ff 50%,
-            #f5f3ff 100%
-        );
-    }
-
-    .loading-container {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-    }
-
-    .loading-spinner {
-        width: 2rem;
-        height: 2rem;
-        border: 3px solid #e5e7eb;
-        border-top-color: #6366f1;
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin {
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    .loading-text {
-        font-size: 0.875rem;
-        color: #6b7280;
-    }
-
-    .error-container {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-        padding: 2rem;
-        text-align: center;
-    }
-
-    .error-text {
-        font-size: 1.125rem;
-        color: #6b7280;
-    }
-
-    .error-link {
-        color: #6366f1;
-        text-decoration: none;
-        font-weight: 500;
-    }
-
-    .error-link:hover {
-        text-decoration: underline;
-    }
-
-    .cta-section {
-        padding: 3rem 1rem 6rem;
-        text-align: center;
-    }
-
-    .cta-link {
-        display: inline-block;
-        padding: 0.75rem 1.5rem;
-        color: #6b7280;
-        text-decoration: none;
-        font-size: 0.875rem;
-        border: 1px solid #e5e7eb;
-        border-radius: 9999px;
-        transition: all 0.2s;
-    }
-
-    .cta-link:hover {
-        color: #374151;
-        border-color: #d1d5db;
-        background: white;
-    }
-</style>
