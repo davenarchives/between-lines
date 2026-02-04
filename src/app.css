@@ -1,0 +1,90 @@
+/**
+ * Global Styles
+ * 
+ * Tailwind CSS imports and custom global styles.
+ * Uses a soft, emotion-friendly color palette.
+ */
+
+/* Font imports MUST come first */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+/* Tailwind CSS */
+@import "tailwindcss";
+
+/* Base styles */
+:root {
+  /* Color palette - soft and emotional */
+  --color-primary: #6366f1;
+  --color-primary-light: #818cf8;
+  --color-text: #1f2937;
+  --color-text-muted: #6b7280;
+  --color-text-subtle: #9ca3af;
+  --color-bg: #faf5ff;
+  --color-bg-white: #ffffff;
+  --color-border: #e5e7eb;
+  --color-success: #10b981;
+  --color-error: #ef4444;
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-serif: 'Georgia', 'Times New Roman', serif;
+
+  /* Spacing */
+  --spacing-base: 1rem;
+}
+
+/* Reset and base styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  line-height: 1.6;
+  background: var(--color-bg);
+}
+
+/* Links */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Remove default button styles */
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection styles */
+::selection {
+  background: var(--color-primary-light);
+  color: white;
+}
+
+/* Input placeholder styling */
+::placeholder {
+  color: var(--color-text-subtle);
+}
