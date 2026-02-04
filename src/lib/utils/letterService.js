@@ -10,7 +10,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 /**
  * Creates a new letter
- * @param {Object} letterData - The letter data (title, body, recipientName)
+ * @param {Omit<Letter, "id" | "createdAt" | "audioUrl">} letterData - The letter data
  * @param {File|null} audioFile - Optional audio file to attach
  * @returns {Promise<string>} - The document ID of the created letter
  */
@@ -40,9 +40,19 @@ export async function createLetter(letterData, audioFile = null) {
 }
 
 /**
+ * @typedef {Object} Letter
+ * @property {string} id
+ * @property {string} title
+ * @property {string} body
+ * @property {string|null} recipientName
+ * @property {string|null} audioUrl
+ * @property {Date} createdAt
+ */
+
+/**
  * Retrieves a letter by its ID
  * @param {string} id - The letter ID
- * @returns {Promise<Object|null>} - The letter data or null if not found
+ * @returns {Promise<Letter|null>} - The letter data or null if not found
  */
 export async function getLetter(id) {
     const docRef = doc(db, "letters", id);
@@ -50,11 +60,11 @@ export async function getLetter(id) {
 
     if (docSnap.exists()) {
         const data = docSnap.data();
-        return {
+        return /** @type {Letter} */ ({
             id: docSnap.id,
             ...data,
             createdAt: new Date(data.createdAt),
-        };
+        });
     }
 
     return null;
