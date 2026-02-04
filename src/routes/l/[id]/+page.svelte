@@ -20,6 +20,9 @@
      * @property {string} title
      * @property {string} body
      * @property {string|null} recipientName
+     * @property {string} envelopeTheme
+     * @property {string} letterTheme
+     * @property {string|null} musicUrl
      * @property {Date} createdAt
      * @property {string|null} [audioUrl]
      */
@@ -109,16 +112,16 @@
         </div>
     {:else if currentLetter}
         <OpenOverlay
-            letterTitle={currentLetter.title}
-            recipientName={currentLetter.recipientName ?? ""}
+            recipientName={currentLetter.recipientName || ""}
+            envelopeTheme={currentLetter.envelopeTheme || "envelope-red"}
             isVisible={!isOpened}
             onopen={handleLetterOpen}
         />
 
         <LetterView
-            title={currentLetter.title}
             body={currentLetter.body}
-            recipientName={currentLetter.recipientName ?? ""}
+            recipientName={currentLetter.recipientName || ""}
+            letterTheme={currentLetter.letterTheme || "letter-sticky"}
             createdAt={currentLetter.createdAt}
             isVisible={isOpened}
         />
@@ -140,3 +143,52 @@
         {/if}
     {/if}
 </div>
+
+<style>
+    .page-container {
+        min-height: 100vh;
+        width: 100%;
+        background: linear-gradient(
+            135deg,
+            #3986d0 0%,
+            #4c9aae 50%,
+            #659883 100%
+        );
+        position: relative;
+    }
+
+    .loading-container,
+    .error-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: white;
+        font-family: "Caveat", cursive;
+    }
+
+    .cta-section {
+        text-align: center;
+        padding: 3rem 1rem;
+    }
+
+    .cta-link {
+        display: inline-block;
+        padding: 1rem 2rem;
+        background: white;
+        color: #3986d0;
+        text-decoration: none;
+        border-radius: 50px;
+        font-family: "Caveat", cursive;
+        font-size: 1.3rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .cta-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+</style>
