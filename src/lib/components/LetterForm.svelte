@@ -11,11 +11,13 @@
     generateShareableUrl,
   } from "$lib/utils/letterService.js";
   import "$lib/styles/letter-form.css";
+  import PreviewModal from "$lib/components/PreviewModal.svelte";
 
   // Props for theme selection (bound to parent)
   let {
     envelopeTheme = $bindable("envelope-red"),
     letterTheme = $bindable("letter-sticky"),
+    isSubmitted = $bindable(false),
   } = $props();
 
   // Form state using Svelte 5 $state rune
@@ -23,7 +25,8 @@
   let body = $state("");
   let selectedMusic = $state("");
   let shareableLink = $state("");
-  let isSubmitted = $state(false);
+  let isPreviewOpen = $state(false);
+  // isSubmitted is now a prop
   let isLoading = $state(false);
   /** @type {string | null} */
   let errorMessage = $state(null);
@@ -169,13 +172,38 @@
         </div>
       {/if}
 
-      <!-- Submit Button -->
-      <button type="submit" class="submit-button" disabled={isLoading}>
-        {isLoading ? "Creating..." : "Send Letter"}
-        {#if !isLoading}
-          <i class="fa-solid fa-paper-plane"></i>
-        {/if}
-      </button>
+      <!-- Action Buttons -->
+      <div class="button-group">
+        <button
+          type="button"
+          class="action-button preview-button"
+          onclick={() => (isPreviewOpen = true)}
+        >
+          Preview
+        </button>
+
+        <button
+          type="submit"
+          class="action-button submit-button"
+          disabled={isLoading}
+        >
+          {isLoading ? "Creating..." : "Create Letter"}
+          {#if !isLoading}
+            <i class="fa-solid fa-paper-plane"></i>
+          {/if}
+        </button>
+      </div>
     </div>
   </form>
+{/if}
+
+{#if isPreviewOpen}
+  <PreviewModal
+    bind:isOpen={isPreviewOpen}
+    {envelopeTheme}
+    {letterTheme}
+    {recipientName}
+    {body}
+    musicUrl={selectedMusic}
+  />
 {/if}
