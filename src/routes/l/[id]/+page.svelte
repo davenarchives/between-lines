@@ -126,11 +126,14 @@
             isVisible={isOpened}
         />
 
-        {#if currentLetter.audioUrl}
+        {#if currentLetter.audioUrl || currentLetter.musicUrl}
             <MusicPlayer
                 bind:this={musicPlayerRef}
-                audioUrl={currentLetter.audioUrl}
+                audioUrl={currentLetter.audioUrl ||
+                    currentLetter.musicUrl ||
+                    ""}
                 isVisible={isOpened}
+                isSticky={false}
             />
         {/if}
 
