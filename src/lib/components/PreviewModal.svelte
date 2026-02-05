@@ -1,10 +1,11 @@
 <script>
     import { fade, fly } from "svelte/transition";
     import LetterView from "./LetterView.svelte";
+    import MusicPlayer from "./MusicPlayer.svelte";
 
     let {
         isOpen = $bindable(false),
-        envelopeTheme,
+        envelopeTheme = "envelope-red",
         letterTheme,
         recipientName,
         body,
@@ -27,6 +28,8 @@
 
     function handleOpenLetter() {
         isLetterOpen = true;
+        // Dispatch letter-opened event for music player
+        window.dispatchEvent(new CustomEvent("letter-opened"));
     }
 
     /** @param {MouseEvent} e */
@@ -61,9 +64,11 @@
                 >
                     <!-- Envelope Image -->
                     <img
-                        src={// @ts-ignore - dynamic theme lookup is safe
-                        envelopeImages[envelopeTheme] ||
-                            envelopeImages["envelope-red"]}
+                        src={envelopeImages[
+                            /** @type {keyof typeof envelopeImages} */ (
+                                envelopeTheme
+                            )
+                        ] || envelopeImages["envelope-red"]}
                         alt="Envelope"
                         class="envelope-img"
                     />
@@ -81,9 +86,9 @@
                 class="preview-content letter-content"
                 in:fly={{ y: -20, duration: 400, opacity: 0 }}
                 onclick={close}
+                onkeydown={(e) => e.key === "Enter" && close()}
                 role="button"
                 tabindex="0"
-                onkeydown={(e) => e.key === "Enter" && close()}
             >
                 <LetterView
                     {letterTheme}
@@ -92,6 +97,10 @@
                     isVisible={true}
                 />
             </div>
+
+            {#if musicUrl}
+                <MusicPlayer audioUrl={musicUrl} isVisible={isLetterOpen} />
+            {/if}
         {/if}
     </div>
 </div>
@@ -117,13 +126,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        pointer-events: none;
         width: 100%;
         height: 100%;
     }
 
     .preview-content {
-        pointer-events: auto;
         display: flex;
         align-items: center;
         justify-content: center;
