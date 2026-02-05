@@ -54,10 +54,6 @@
         </div>
       {/if}
     </div>
-
-    <div class="click-hint">
-      <button class="open-btn">Click to Open</button>
-    </div>
   </div>
 {/if}
 
@@ -124,33 +120,6 @@
     pointer-events: none;
     padding: 0 1rem;
     box-sizing: border-box;
-  }
-
-  .click-hint {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .open-btn {
-    background: white;
-    border: 2px solid #8b7355;
-    color: #8b7355;
-    padding: 1rem 2.5rem;
-    border-radius: 50px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: "Caveat", cursive;
-  }
-
-  .open-btn:hover {
-    background: #8b7355;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
   }
 
   @media (max-width: 768px) {
