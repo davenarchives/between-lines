@@ -100,7 +100,7 @@
   }
 
   .envelope-image {
-    max-width: 650px;
+    max-width: 600px;
     width: 90vw;
     height: auto;
     filter: drop-shadow(0 12px 40px rgba(0, 0, 0, 0.3));

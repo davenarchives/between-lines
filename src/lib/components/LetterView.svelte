@@ -75,7 +75,7 @@
 <style>
   .letter-display {
     width: 100%;
-    min-height: 100vh;
+    /* min-height: 100vh; - Removed to allow natural flow with MusicPlayer below */
     display: flex;
     justify-content: center;
     align-items: flex-start;
