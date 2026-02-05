@@ -23,6 +23,7 @@
         {#if !isSubmitted}
             <aside class="theme-column envelope-column">
                 <button
+                    type="button"
                     class="theme-preview-btn"
                     class:selected={selectedEnvelopeTheme === "envelope-red"}
                     onclick={() => (selectedEnvelopeTheme = "envelope-red")}
@@ -36,6 +37,7 @@
                 </button>
 
                 <button
+                    type="button"
                     class="theme-preview-btn"
                     class:selected={selectedEnvelopeTheme === "envelope-pink"}
                     onclick={() => (selectedEnvelopeTheme = "envelope-pink")}
@@ -49,6 +51,7 @@
                 </button>
 
                 <button
+                    type="button"
                     class="theme-preview-btn"
                     class:selected={selectedEnvelopeTheme === "envelope-green"}
                     onclick={() => (selectedEnvelopeTheme = "envelope-green")}
@@ -76,6 +79,7 @@
         {#if !isSubmitted}
             <aside class="theme-column letter-column">
                 <button
+                    type="button"
                     class="theme-preview-btn"
                     class:selected={selectedLetterTheme === "letter-sticky"}
                     onclick={() => (selectedLetterTheme = "letter-sticky")}
@@ -89,6 +93,7 @@
                 </button>
 
                 <button
+                    type="button"
                     class="theme-preview-btn"
                     class:selected={selectedLetterTheme === "letter-lined"}
                     onclick={() => (selectedLetterTheme = "letter-lined")}
@@ -102,6 +107,7 @@
                 </button>
 
                 <button
+                    type="button"
                     class="theme-preview-btn"
                     class:selected={selectedLetterTheme === "letter-pastel"}
                     onclick={() => (selectedLetterTheme = "letter-pastel")}

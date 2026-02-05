@@ -12,6 +12,7 @@
   } from "$lib/utils/letterService.js";
   import "$lib/styles/letter-form.css";
   import PreviewModal from "$lib/components/PreviewModal.svelte";
+  import SpotifySearch from "$lib/components/SpotifySearch.svelte";
 
   // Props for theme selection (bound to parent)
   let {
@@ -150,18 +151,7 @@
 
       <!-- Music Selection -->
       <div class="form-group">
-        <div class="music-selector">
-          <i class="fa-brands fa-spotify spotify-icon"></i>
-          <select bind:value={selectedMusic} class="music-select">
-            <option value="">Select a music</option>
-            <option value="lofi-1">Lo-Fi Beats #1</option>
-            <option value="lofi-2">Chill Vibes</option>
-            <option value="lofi-3">Study Session</option>
-            <option value="acoustic-1">Acoustic Dreams</option>
-            <option value="piano-1">Piano Ballad</option>
-          </select>
-          <i class="fa-solid fa-chevron-down dropdown-icon"></i>
-        </div>
+        <SpotifySearch bind:selectedMusic />
       </div>
 
       <!-- Error Message -->
