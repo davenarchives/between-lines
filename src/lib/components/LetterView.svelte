@@ -30,6 +30,8 @@
     letterThemeImages[letterTheme] || letterThemeImages["letter-sticky"],
   );
 
+  const paragraphs = $derived(body.split("\n"));
+
   /**
    * Format the date in a friendly way
    */
@@ -55,18 +57,16 @@
       <img src={letterBackground} alt="Letter theme" class="theme-background" />
 
       <!-- Text Overlay -->
-      <div class="text-overlay">
+      <div class="text-overlay {letterTheme}">
         {#if recipientName}
           <p class="recipient-text">To {recipientName},</p>
         {/if}
 
-        <p class="body-text">
-          {body}
-        </p>
-
-        {#if createdAt}
-          <time class="date-text">{formatDate(createdAt)}</time>
-        {/if}
+        {#each paragraphs as paragraph}
+          <p class="body-text">
+            {paragraph}
+          </p>
+        {/each}
       </div>
     </div>
   </article>
@@ -97,12 +97,15 @@
 
   .text-overlay {
     position: absolute;
-    top: 22%;
-    left: 31%;
-    right: 25%;
+    top: 13%;
+    left: 28%;
+    right: 20%;
+    max-width: 55%;
     padding: 1rem;
-    max-width: 45%;
+    padding-right: 2rem;
   }
+
+  /* Keep other themes as default for now, or tune them if needed later */
 
   .recipient-text {
     font-family: "Caveat", cursive;
@@ -117,8 +120,9 @@
     font-size: 1.3rem;
     line-height: 1.8;
     color: #1a202c;
-    margin-bottom: 1.5rem;
-    white-space: pre-wrap;
+    margin-bottom: 0.5rem; /* Reduced margin for split paragraphs */
+    text-indent: 2rem; /* Indentation for paragraphs */
+    min-height: 1.5rem; /* Ensure empty lines take up space */
     font-weight: 500;
   }
 
@@ -140,8 +144,8 @@
     }
 
     .text-overlay {
-      top: 16%;
-      left: 20%;
+      top: 12%;
+      left: 25%;
       right: 16%;
       max-width: 60%;
     }
@@ -161,10 +165,10 @@
     }
 
     .text-overlay {
-      top: 14%;
-      left: 18%;
+      top: 10%;
+      left: 20%;
       right: 14%;
-      max-width: 65%;
+      max-width: 70%;
       padding: 0.5rem;
     }
 
@@ -185,10 +189,11 @@
 
   @media (max-width: 480px) {
     .text-overlay {
-      top: 12%;
+      top: 8%;
       left: 15%;
       right: 12%;
-      max-width: 70%;
+      width: 75%;
+      max-width: none;
     }
 
     .recipient-text {

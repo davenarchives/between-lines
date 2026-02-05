@@ -100,7 +100,7 @@
   }
 
   .envelope-image {
-    max-width: 600px;
+    max-width: 650px;
     width: 90vw;
     height: auto;
     filter: drop-shadow(0 12px 40px rgba(0, 0, 0, 0.3));
@@ -113,14 +113,17 @@
 
   .letter-peek {
     position: absolute;
-    top: 30%;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 25%;
+    left: 0;
+    width: 100%;
+    text-align: center;
     font-family: "Caveat", cursive;
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: #4a5568;
     font-weight: 600;
     pointer-events: none;
+    padding: 0 1rem;
+    box-sizing: border-box;
   }
 
   .click-hint {
@@ -152,7 +155,7 @@
 
   @media (max-width: 768px) {
     .envelope-image {
-      max-width: 400px;
+      max-width: 480px;
     }
 
     .logo {

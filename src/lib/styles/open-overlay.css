@@ -1,56 +1,185 @@
-  .overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 50;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #faf5ff 0%, #f0f9ff 50%, #f5f3ff 100%);
-  }
+/* Envelope Overlay Styles */
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #fdfbf7 0%, #e6e0d4 100%);
+    /* Warm paper-like bg */
+    perspective: 1000px;
+    overflow: hidden;
+}
 
-  .overlay-content {
-      text-align: center;
-      padding: 2rem;
-      max-width: 24rem;
-  }
+.envelope-container {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+}
 
-  .recipient {
-      font-size: 0.875rem;
-      color: #6b7280;
-      margin-bottom: 0.5rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-  }
+.envelope-container:hover {
+    transform: scale(1.02);
+}
 
-  .title {
-      font-size: 1.875rem;
-      font-weight: 300;
-      color: #1f2937;
-      margin-bottom: 2rem;
-      line-height: 1.3;
-      font-family: "Georgia", serif;
-  }
+.envelope {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    background: #b91c1c;
+    /* Deep Red */
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+}
 
-  .open-button {
-      padding: 1rem 2.5rem;
-      background: #1f2937;
-      color: white;
-      border: none;
-      border-radius: 9999px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.15);
-  }
+/* The Flap (Top Triangle) */
+.flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-top: 110px solid #991b1b;
+    /* Slightly darker red for depth */
+    transform-origin: top;
+    z-index: 5;
+    transition: transform 0.6s 0.2s ease-in-out, z-index 0.2s 0.6s;
+    /* Transition z-index after flap opens */
+}
 
-  .open-button:hover {
-      background: #374151;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.2);
-  }
+/* Side Flaps */
+.side-flap {
+    position: absolute;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-bottom: 200px solid transparent;
+    border-top: 200px solid transparent;
+    z-index: 4;
+}
 
-  .hint {
-      margin-top: 1.5rem;
-      font-size: 0.75rem;
-      color: #9ca3af;
-  }
+.side-flap.left {
+    left: 0;
+    border-left: 140px solid #a71b1b;
+    /* Slightly different red for depth */
+}
+
+.side-flap.right {
+    right: 0;
+    border-right: 140px solid #a71b1b;
+}
+
+/* The Pocket (Bottom Triangle covering the letter) */
+.pocket {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-bottom: 100px solid #ef4444;
+    /* Lighter red for contrast */
+    z-index: 5;
+    /* On top of side flaps */
+}
+
+/* Letter inside the envelope */
+.letter-preview {
+    position: absolute;
+    bottom: 0;
+    width: 260px;
+    height: 180px;
+    background: #fff;
+    z-index: 3;
+    /* Behind flaps but on top of base */
+    transition: transform 0.6s ease-in-out;
+    padding: 15px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.letter-content {
+    opacity: 0.7;
+}
+
+.letter-tease {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.line {
+    height: 1px;
+    background: #eee;
+    margin: 8px 0;
+    width: 100%;
+}
+
+/* Click Hint / Label below envelope */
+.click-hint {
+    margin-top: 40px;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    color: #5d5d5d;
+    opacity: 0;
+    animation: fadeIn 1s 0.5s forwards;
+}
+
+.click-hint span {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.open-btn {
+    background: transparent;
+    border: 1px solid #b91c1c;
+    color: #b91c1c;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.open-btn:hover {
+    background: #b91c1c;
+    color: white;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animation States handled via classes or Svelte transition logic */
+/* When container has class 'open', animations trigger - but mostly this component unmounts on open.
+   So we rely on the click action to trigger state change in parent.
+   However, we can add a simple hover effect for "peeking".
+*/
+
+.envelope-container:hover .flap {
+    transform: rotateX(20deg);
+}
+
+.envelope-container:hover .letter-preview {
+    transform: translateY(-10px);
+}
