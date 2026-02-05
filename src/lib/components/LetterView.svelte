@@ -30,7 +30,52 @@
     letterThemeImages[letterTheme] || letterThemeImages["letter-sticky"],
   );
 
-  const paragraphs = $derived(body.split("\n"));
+  // Pagination logic
+  const MAX_CHARS = 570;
+  let currentPage = $state(0);
+
+  const pages = $derived.by(() => {
+    if (!body || body.length <= MAX_CHARS) return [body];
+    const chunks = [];
+    let currentBody = body;
+
+    // Split by max chars but try not to break words
+    for (let i = 0; i < body.length; i += MAX_CHARS) {
+      // Simple chunking for now as per request strict limit
+      // We could improve to look for space near limit if needed
+      chunks.push(body.slice(i, i + MAX_CHARS));
+    }
+    return chunks;
+  });
+
+  const currentTextRaw = $derived(pages[currentPage] || "");
+
+  const currentText = $derived.by(() => {
+    let text = currentTextRaw;
+    // Add "..." to start if not first page
+    if (currentPage > 0) {
+      text = "..." + text;
+    }
+    // Add "..." to end if not last page
+    if (currentPage < pages.length - 1) {
+      text = text + "...";
+    }
+    return text;
+  });
+
+  const paragraphs = $derived(currentText.split("\n"));
+
+  function nextPage() {
+    if (currentPage < pages.length - 1) {
+      currentPage++;
+    }
+  }
+
+  function prevPage() {
+    if (currentPage > 0) {
+      currentPage--;
+    }
+  }
 
   /**
    * Format the date in a friendly way
@@ -68,6 +113,35 @@
           </p>
         {/each}
       </div>
+
+      <!-- Navigation Arrows -->
+      {#if pages.length > 1}
+        {#if currentPage > 0}
+          <button
+            class="nav-arrow prev"
+            onclick={(e) => {
+              e.stopPropagation();
+              prevPage();
+            }}
+            aria-label="Previous page"
+          >
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+        {/if}
+
+        {#if currentPage < pages.length - 1}
+          <button
+            class="nav-arrow next"
+            onclick={(e) => {
+              e.stopPropagation();
+              nextPage();
+            }}
+            aria-label="Next page"
+          >
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        {/if}
+      {/if}
     </div>
   </article>
 {/if}
@@ -86,6 +160,68 @@
     position: relative;
     max-width: 1100px;
     width: 95%;
+  }
+
+  /* Navigation Arrows */
+  .nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 3rem;
+    color: #2d3748;
+    cursor: pointer;
+    padding: 1rem;
+    opacity: 0.7;
+    transition: all 0.2s;
+    z-index: 10;
+  }
+
+  .nav-arrow:hover {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .nav-arrow.prev {
+    left: -60px;
+  }
+
+  .nav-arrow.next {
+    right: -60px;
+  }
+
+  /* Responsive styling for arrows */
+  @media (max-width: 1200px) {
+    .nav-arrow {
+      font-size: 2.5rem;
+    }
+    .nav-arrow.prev {
+      left: -40px;
+    }
+    .nav-arrow.next {
+      right: -40px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .nav-arrow {
+      font-size: 2rem;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .nav-arrow.prev {
+      left: 10px;
+    }
+    .nav-arrow.next {
+      right: 10px;
+    }
   }
 
   .theme-background {
