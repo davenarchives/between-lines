@@ -8,6 +8,7 @@
     // Theme state
     let selectedEnvelopeTheme = $state("envelope-red");
     let selectedLetterTheme = $state("letter-sticky");
+    let isSubmitted = $state(false);
 </script>
 
 <div class="create-page">
@@ -17,104 +18,109 @@
     </header>
 
     <!-- Main 3-Column Layout -->
-    <main class="create-main">
+    <main class="create-main" class:submitted={isSubmitted}>
         <!-- Left Column: Envelope Themes -->
-        <aside class="theme-column envelope-column">
-            <button
-                class="theme-preview-btn"
-                class:selected={selectedEnvelopeTheme === "envelope-red"}
-                onclick={() => (selectedEnvelopeTheme = "envelope-red")}
-                aria-label="Select red envelope"
-            >
-                <img
-                    src="/images/envelope1.png"
-                    alt="Red envelope"
-                    class="theme-image"
-                />
-            </button>
+        {#if !isSubmitted}
+            <aside class="theme-column envelope-column">
+                <button
+                    class="theme-preview-btn"
+                    class:selected={selectedEnvelopeTheme === "envelope-red"}
+                    onclick={() => (selectedEnvelopeTheme = "envelope-red")}
+                    aria-label="Select red envelope"
+                >
+                    <img
+                        src="/images/envelope1.png"
+                        alt="Red envelope"
+                        class="theme-image"
+                    />
+                </button>
 
-            <button
-                class="theme-preview-btn"
-                class:selected={selectedEnvelopeTheme === "envelope-pink"}
-                onclick={() => (selectedEnvelopeTheme = "envelope-pink")}
-                aria-label="Select pink envelope"
-            >
-                <img
-                    src="/images/envelope2.png"
-                    alt="Pink envelope"
-                    class="theme-image"
-                />
-            </button>
+                <button
+                    class="theme-preview-btn"
+                    class:selected={selectedEnvelopeTheme === "envelope-pink"}
+                    onclick={() => (selectedEnvelopeTheme = "envelope-pink")}
+                    aria-label="Select pink envelope"
+                >
+                    <img
+                        src="/images/envelope2.png"
+                        alt="Pink envelope"
+                        class="theme-image"
+                    />
+                </button>
 
-            <button
-                class="theme-preview-btn"
-                class:selected={selectedEnvelopeTheme === "envelope-green"}
-                onclick={() => (selectedEnvelopeTheme = "envelope-green")}
-                aria-label="Select green envelope"
-            >
-                <img
-                    src="/images/envelope3.png"
-                    alt="Green envelope"
-                    class="theme-image"
-                />
-            </button>
-        </aside>
+                <button
+                    class="theme-preview-btn"
+                    class:selected={selectedEnvelopeTheme === "envelope-green"}
+                    onclick={() => (selectedEnvelopeTheme = "envelope-green")}
+                    aria-label="Select green envelope"
+                >
+                    <img
+                        src="/images/envelope3.png"
+                        alt="Green envelope"
+                        class="theme-image"
+                    />
+                </button>
+            </aside>
+        {/if}
 
         <!-- Center Column: Form -->
         <section class="form-column">
             <LetterForm
                 bind:envelopeTheme={selectedEnvelopeTheme}
                 bind:letterTheme={selectedLetterTheme}
+                bind:isSubmitted
             />
         </section>
 
         <!-- Right Column: Letter Themes -->
-        <aside class="theme-column letter-column">
-            <button
-                class="theme-preview-btn"
-                class:selected={selectedLetterTheme === "letter-sticky"}
-                onclick={() => (selectedLetterTheme = "letter-sticky")}
-                aria-label="Select sticky note theme"
-            >
-                <img
-                    src="/images/theme1.png"
-                    alt="Sticky note"
-                    class="theme-image"
-                />
-            </button>
+        {#if !isSubmitted}
+            <aside class="theme-column letter-column">
+                <button
+                    class="theme-preview-btn"
+                    class:selected={selectedLetterTheme === "letter-sticky"}
+                    onclick={() => (selectedLetterTheme = "letter-sticky")}
+                    aria-label="Select sticky note theme"
+                >
+                    <img
+                        src="/images/theme1.png"
+                        alt="Sticky note"
+                        class="theme-image"
+                    />
+                </button>
 
-            <button
-                class="theme-preview-btn"
-                class:selected={selectedLetterTheme === "letter-lined"}
-                onclick={() => (selectedLetterTheme = "letter-lined")}
-                aria-label="Select lined paper theme"
-            >
-                <img
-                    src="/images/theme2.png"
-                    alt="Lined paper"
-                    class="theme-image"
-                />
-            </button>
+                <button
+                    class="theme-preview-btn"
+                    class:selected={selectedLetterTheme === "letter-lined"}
+                    onclick={() => (selectedLetterTheme = "letter-lined")}
+                    aria-label="Select lined paper theme"
+                >
+                    <img
+                        src="/images/theme2.png"
+                        alt="Lined paper"
+                        class="theme-image"
+                    />
+                </button>
 
-            <button
-                class="theme-preview-btn"
-                class:selected={selectedLetterTheme === "letter-pastel"}
-                onclick={() => (selectedLetterTheme = "letter-pastel")}
-                aria-label="Select pastel note theme"
-            >
-                <img
-                    src="/images/theme3.png"
-                    alt="Pastel note"
-                    class="theme-image"
-                />
-            </button>
-        </aside>
+                <button
+                    class="theme-preview-btn"
+                    class:selected={selectedLetterTheme === "letter-pastel"}
+                    onclick={() => (selectedLetterTheme = "letter-pastel")}
+                    aria-label="Select pastel note theme"
+                >
+                    <img
+                        src="/images/theme3.png"
+                        alt="Pastel note"
+                        class="theme-image"
+                    />
+                </button>
+            </aside>
+        {/if}
     </main>
 </div>
 
 <style>
     .create-page {
-        min-height: 100vh;
+        height: 100vh;
         width: 100vw;
         max-width: 100%;
         background: linear-gradient(
@@ -126,12 +132,14 @@
         display: flex;
         flex-direction: column;
         padding: 2rem 1rem;
-        overflow-x: hidden;
+        overflow: hidden; /* Prevent scrolling */
         box-sizing: border-box;
     }
 
     .page-header {
-        text-align: center;
+        display: flex;
+        justify-content: center;
+        width: 100%;
         margin-bottom: 2rem;
     }
 
@@ -145,13 +153,18 @@
     .create-main {
         flex: 1;
         display: grid;
-        grid-template-columns: 160px 1fr 160px;
+        grid-template-columns: 100px 1fr 100px;
         gap: 1.5rem;
         max-width: 1200px;
         width: 100%;
         margin: 0 auto;
         align-items: start;
         box-sizing: border-box;
+    }
+
+    .create-main.submitted {
+        grid-template-columns: 1fr;
+        max-width: 800px; /* Constrain width for single column */
     }
 
     /* Theme Columns */
@@ -163,10 +176,10 @@
 
     /* Theme Preview Buttons */
     .theme-preview-btn {
-        background: rgba(255, 255, 255, 0.3);
-        border: 3px solid transparent;
-        border-radius: 15px;
-        padding: 0.75rem;
+        background: rgba(164, 225, 225, 0.4); /* Teal tint */
+        border: none;
+        border-radius: 20px;
+        padding: 0.5rem;
         cursor: pointer;
         transition: all 0.3s ease;
         width: 100%;
@@ -183,8 +196,8 @@
     }
 
     .theme-preview-btn.selected {
-        border-color: white;
-        background: rgba(255, 255, 255, 0.5);
+        border: 3px solid white;
+        background: rgba(164, 225, 225, 0.6);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
