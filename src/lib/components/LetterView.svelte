@@ -78,8 +78,8 @@
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 2rem 1rem;
+    align-items: flex-start;
+    padding: 3rem 1rem 2rem 1rem;
   }
 
   .theme-container {
