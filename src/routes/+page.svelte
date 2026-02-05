@@ -5,7 +5,9 @@
 
 <div class="hero-page">
     <div class="hero-content">
-        <img src="/logo.png" alt="Between Lines" class="hero-logo" />
+        <a href="/" aria-label="Go to home">
+            <img src="/logo.png" alt="Between Lines" class="hero-logo" />
+        </a>
         <p class="hero-tagline">For things worth saying.</p>
         <a href="/create" class="cta-button">
             Send a letter

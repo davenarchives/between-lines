@@ -34,7 +34,9 @@
   <div class="overlay" transition:fade={{ duration: 1000 }}>
     <!-- Logo -->
     <div class="logo-container">
-      <img src="/images/logo.png" alt="Between Lines" class="logo" />
+      <a href="/" aria-label="Go to home">
+        <img src="/images/logo.png" alt="Between Lines" class="logo" />
+      </a>
     </div>
 
     <div

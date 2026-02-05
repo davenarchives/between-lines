@@ -14,7 +14,9 @@
 <div class="create-page">
     <!-- Centered Logo -->
     <header class="page-header">
-        <img src="/images/logo.png" alt="Between Lines" class="page-logo" />
+        <a href="/" aria-label="Go to home">
+            <img src="/images/logo.png" alt="Between Lines" class="page-logo" />
+        </a>
     </header>
 
     <!-- Main 3-Column Layout -->
