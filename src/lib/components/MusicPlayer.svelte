@@ -68,7 +68,7 @@
       <div
         class="{isSticky
           ? 'fixed bottom-6 left-1/2 -translate-x-1/2'
-          : 'relative mx-auto my-4'} z-[9999] shadow-xl rounded-2xl overflow-hidden"
+          : 'relative mx-auto mt-4 mb-8'} z-[9999] shadow-xl rounded-2xl overflow-hidden"
         style={isSticky ? "" : "width: 280px;"}
         transition:fade={{ duration: 500 }}
       >
