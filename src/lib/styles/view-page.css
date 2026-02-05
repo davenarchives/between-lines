@@ -1,10 +1,11 @@
 /* View Page Background - Neutral Texture */
 .view-page {
     min-height: 100vh;
-    background-color: #f3f4f6;
-    background-image:
-        radial-gradient(at 47% 33%, hsl(315.79, 0%, 96%) 0, transparent 59%),
-        radial-gradient(at 82% 65%, hsl(218.06, 0%, 92%) 0, transparent 55%);
+    width: 100%;
+    background: linear-gradient(135deg,
+            #3986d0 0%,
+            #4c9aae 50%,
+            #659883 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
