@@ -22,6 +22,7 @@
     "envelope-red": "/images/envelope1.png",
     "envelope-pink": "/images/envelope2.png",
     "envelope-green": "/images/envelope3.png",
+    "envelope-blue": "/images/envelope4.png",
   };
 
   const envelopeImageSrc = $derived(
