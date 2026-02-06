@@ -65,6 +65,20 @@
                         class="theme-image"
                     />
                 </button>
+
+                <button
+                    type="button"
+                    class="theme-preview-btn"
+                    class:selected={selectedEnvelopeTheme === "envelope-blue"}
+                    onclick={() => (selectedEnvelopeTheme = "envelope-blue")}
+                    aria-label="Select blue envelope"
+                >
+                    <img
+                        src="/images/envelope4.png"
+                        alt="Blue envelope"
+                        class="theme-image"
+                    />
+                </button>
             </aside>
         {/if}
 
@@ -118,6 +132,20 @@
                     <img
                         src="/images/theme3.png"
                         alt="Pastel note"
+                        class="theme-image"
+                    />
+                </button>
+
+                <button
+                    type="button"
+                    class="theme-preview-btn"
+                    class:selected={selectedLetterTheme === "letter-minimal"}
+                    onclick={() => (selectedLetterTheme = "letter-minimal")}
+                    aria-label="Select minimal letter theme"
+                >
+                    <img
+                        src="/images/theme4.png"
+                        alt="Minimal letter"
                         class="theme-image"
                     />
                 </button>
