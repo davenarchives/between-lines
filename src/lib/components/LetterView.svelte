@@ -23,6 +23,7 @@
     "letter-sticky": "/images/theme1.png",
     "letter-lined": "/images/theme2.png",
     "letter-pastel": "/images/theme3.png",
+    "letter-minimal": "/images/theme4.png",
   };
 
   const letterBackground = $derived(
@@ -31,19 +32,65 @@
   );
 
   // Pagination logic
-  const MAX_CHARS = 570;
+  // We use a "cost" system: each character is 1 cost, but newlines are expensive (e.g. 60 chars worth of space)
+  const MAX_COST = 700;
+  const NEWLINE_COST = 60;
   let currentPage = $state(0);
 
   const pages = $derived.by(() => {
-    if (!body || body.length <= MAX_CHARS) return [body];
-    const chunks = [];
-    let currentBody = body;
+    if (!body) return [""];
 
-    // Split by max chars but try not to break words
-    for (let i = 0; i < body.length; i += MAX_CHARS) {
-      // Simple chunking for now as per request strict limit
-      // We could improve to look for space near limit if needed
-      chunks.push(body.slice(i, i + MAX_CHARS));
+    const chunks = [];
+    let remaining = body;
+
+    while (remaining.length > 0) {
+      let currentCost = 0;
+      let splitIndex = 0;
+
+      // Calculate how many characters fit within MAX_COST
+      for (let i = 0; i < remaining.length; i++) {
+        const char = remaining[i];
+        const cost = char === "\n" ? NEWLINE_COST : 1;
+
+        if (currentCost + cost > MAX_COST) {
+          break;
+        }
+        currentCost += cost;
+        splitIndex++;
+      }
+
+      // If we reached the end of the string, take it all
+      if (splitIndex === remaining.length) {
+        chunks.push(remaining);
+        break;
+      }
+
+      // If we are in the middle, try to split at a space or newline nicely
+      // Look back from splitIndex for a space or newline to avoid cutting words
+      let niceSplitIndex = -1;
+
+      // Look for the last whitespace within the last 100 chars of the range to be safe
+      const searchStart = Math.max(0, splitIndex - 100);
+      const searchEnd = splitIndex;
+
+      for (let i = searchEnd; i >= searchStart; i--) {
+        if (remaining[i] === " " || remaining[i] === "\n") {
+          niceSplitIndex = i;
+          break;
+        }
+      }
+
+      // If found a nice spot, split there
+      if (niceSplitIndex !== -1) {
+        splitIndex = niceSplitIndex;
+      }
+
+      // Ensure we make at least some progress to avoid infinite loops
+      if (splitIndex === 0) splitIndex = 1;
+
+      chunks.push(remaining.slice(0, splitIndex));
+      // Trim start of next chunk to remove the split char if it was a space
+      remaining = remaining.slice(splitIndex).trim();
     }
     return chunks;
   });
@@ -103,7 +150,7 @@
 
       <!-- Text Overlay -->
       <div class="text-overlay {letterTheme}">
-        {#if recipientName}
+        {#if recipientName && currentPage === 0}
           <p class="recipient-text">To {recipientName},</p>
         {/if}
 
