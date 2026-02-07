@@ -68,7 +68,7 @@
       <div
         class="{isSticky
           ? 'fixed bottom-6 left-1/2 -translate-x-1/2'
-          : 'relative mx-auto mt-4 mb-8'} z-[9999] shadow-xl rounded-2xl overflow-hidden spotify-player"
+          : 'relative mx-auto mt-0 mb-2'} z-[9999] shadow-xl rounded-2xl overflow-hidden spotify-player"
         transition:fade={{ duration: 500 }}
       >
         <iframe
