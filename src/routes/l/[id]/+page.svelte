@@ -111,6 +111,11 @@
             <a href="/" class="error-link">Create a new letter</a>
         </div>
     {:else if currentLetter}
+        <!-- Mobile Logo (Main Logo) -->
+        <div class="mobile-logo-container">
+            <img src="/logo.png" alt="Between Lines" class="mobile-logo" />
+        </div>
+
         <OpenOverlay
             recipientName={currentLetter.recipientName || ""}
             envelopeTheme={currentLetter.envelopeTheme || "envelope-red"}
@@ -148,18 +153,6 @@
 </div>
 
 <style>
-    .page-container {
-        min-height: 100vh;
-        width: 100%;
-        background: linear-gradient(
-            135deg,
-            #3986d0 0%,
-            #4c9aae 50%,
-            #659883 100%
-        );
-        position: relative;
-    }
-
     .loading-container,
     .error-container {
         min-height: 100vh;
@@ -193,5 +186,27 @@
     .cta-link:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Mobile Logo Styling */
+    .mobile-logo-container {
+        display: none; /* Hidden by default on desktop */
+        margin-bottom: 2rem;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .mobile-logo {
+        max-width: 280px; /* Increased from 180px */
+        height: auto;
+        margin: 0 auto;
+        filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    }
+
+    @media (max-width: 768px) {
+        .mobile-logo-container {
+            display: flex; /* Visible on mobile/tablet */
+        }
     }
 </style>
