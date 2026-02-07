@@ -33,7 +33,7 @@
 
 {#if isVisible}
   <div class="overlay" transition:fade={{ duration: 1000 }}>
-    <!-- Logo -->
+    <!-- Logo (Mobile Only) -->
     <div class="logo-container">
       <a href="/" aria-label="Go to home">
         <img src="/images/logo.png" alt="Between Lines" class="logo" />
@@ -56,6 +56,9 @@
           To {recipientName}
         </div>
       {/if}
+
+      <!-- Click Instruction -->
+      <div class="click-instruction">Click envelope to open</div>
     </div>
   </div>
 {/if}
@@ -87,6 +90,15 @@
     max-width: 300px;
     height: auto;
     filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
+  }
+
+  .click-instruction {
+    margin-top: 1.5rem;
+    font-family: "Caveat", cursive;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    font-weight: 500;
   }
 
   .envelope-container {
@@ -141,30 +153,49 @@
 
   @media (max-width: 480px) {
     .overlay {
-      gap: 1.5rem;
+      gap: 0;
+      justify-content: center; /* Center content to match LetterView */
+      padding-top: 0;
     }
 
     .logo-container {
-      top: 1.5rem;
+      display: flex; /* Show on mobile */
+      position: static;
+      transform: none;
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 2rem;
     }
 
     .logo {
-      max-width: 160px;
+      max-width: 280px;
     }
 
     .envelope-container {
-      margin-top: 3rem;
+      flex: 0 0 auto;
+      width: 100%;
+      margin-top: 0;
+      margin-bottom: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .envelope-image {
-      max-width: 320px;
-      width: 95vw;
+      max-width: 450px;
+      width: 90vw;
+      /* Remove auto margins if present */
     }
 
     .letter-peek {
       font-size: 1.3rem;
       top: 28%;
       padding: 0 0.75rem;
+    }
+
+    .click-instruction {
+      font-size: 1rem;
+      margin-top: 1rem;
     }
   }
 </style>
