@@ -126,16 +126,45 @@
   }
 
   @media (max-width: 768px) {
-    .envelope-image {
-      max-width: 480px;
-    }
-
     .logo {
       max-width: 200px;
     }
 
+    .envelope-image {
+      max-width: 450px;
+    }
+
     .letter-peek {
-      font-size: 1.5rem;
+      font-size: 1.75rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .overlay {
+      gap: 1.5rem;
+    }
+
+    .logo-container {
+      top: 1.5rem;
+    }
+
+    .logo {
+      max-width: 160px;
+    }
+
+    .envelope-container {
+      margin-top: 3rem;
+    }
+
+    .envelope-image {
+      max-width: 320px;
+      width: 95vw;
+    }
+
+    .letter-peek {
+      font-size: 1.3rem;
+      top: 28%;
+      padding: 0 0.75rem;
     }
   }
 </style>
