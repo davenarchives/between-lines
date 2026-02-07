@@ -175,8 +175,10 @@
     .page-header {
         display: flex;
         justify-content: center;
+        align-items: center;
         width: 100%;
-        margin-bottom: 2rem;
+        margin: 0 auto 2rem auto;
+        text-align: center;
     }
 
     .page-logo {
@@ -184,6 +186,8 @@
         width: 80%;
         height: auto;
         filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+        display: block;
+        margin: 0 auto;
     }
 
     .create-main {
@@ -262,22 +266,68 @@
     }
 
     @media (max-width: 768px) {
+        .create-page {
+            padding: 1.5rem 1rem;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .page-header {
+            margin-bottom: 1.5rem;
+        }
+
         .create-main {
             grid-template-columns: 1fr;
-            gap: 2rem;
+            gap: 1.5rem;
         }
 
         .theme-column {
             flex-direction: row;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
         .theme-preview-btn {
-            max-width: 100px;
+            max-width: 90px;
+            flex-shrink: 0;
         }
 
         .page-logo {
             max-width: 200px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .create-page {
+            padding: 1rem 0.75rem;
+            height: auto;
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+
+        .page-header {
+            margin-bottom: 1rem;
+        }
+
+        .page-logo {
+            max-width: 160px;
+        }
+
+        .create-main {
+            gap: 1rem;
+        }
+
+        .theme-column {
+            gap: 0.75rem;
+        }
+
+        .theme-preview-btn {
+            max-width: 70px;
+            padding: 0.4rem;
+        }
+
+        .form-column {
+            width: 100%;
         }
     }
 </style>
