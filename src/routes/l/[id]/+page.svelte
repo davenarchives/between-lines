@@ -10,6 +10,7 @@
     import MusicPlayer from "$lib/components/MusicPlayer.svelte";
     import { getLetter } from "$lib/utils/letterService.js";
     import "$lib/styles/view-page.css";
+    import logo from "$lib/assets/logo.png";
 
     // Get ID from route params
     let id = $derived($page.params.id);
@@ -113,7 +114,7 @@
     {:else if currentLetter}
         <!-- Mobile Logo (Main Logo) -->
         <div class="mobile-logo-container">
-            <img src="/logo.png" alt="Between Lines" class="mobile-logo" />
+            <enhanced:img src={logo} alt="Between Lines" class="mobile-logo" />
         </div>
 
         <OpenOverlay
@@ -166,7 +167,7 @@
 
     .cta-section {
         text-align: center;
-        padding: 3rem 1rem;
+        padding: 1.5rem 1rem;
     }
 
     .cta-link {
