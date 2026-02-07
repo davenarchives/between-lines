@@ -68,8 +68,7 @@
       <div
         class="{isSticky
           ? 'fixed bottom-6 left-1/2 -translate-x-1/2'
-          : 'relative mx-auto mt-4 mb-8'} z-[9999] shadow-xl rounded-2xl overflow-hidden"
-        style={isSticky ? "" : "width: 280px;"}
+          : 'relative mx-auto mt-4 mb-8'} z-[9999] shadow-xl rounded-2xl overflow-hidden spotify-player"
         transition:fade={{ duration: 500 }}
       >
         <iframe
@@ -84,6 +83,25 @@
           loading="lazy"
         ></iframe>
       </div>
+
+      <style>
+        @media (max-width: 480px) {
+          .spotify-player {
+            width: calc(100vw - 2rem) !important;
+            max-width: 280px;
+          }
+
+          .spotify-player iframe {
+            width: 100%;
+          }
+        }
+
+        @media (max-width: 360px) {
+          .spotify-player {
+            bottom: 1rem !important;
+          }
+        }
+      </style>
     {/if}
   {:else}
     <audio
@@ -95,7 +113,7 @@
 
     {#if isVisible}
       <div
-        class="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 py-3 px-5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg z-40"
+        class="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 py-3 px-5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg z-40 audio-controls"
         transition:fade={{ duration: 500 }}
       >
         <button
@@ -127,10 +145,40 @@
           {/if}
         </button>
 
-        <span class="text-sm text-gray-500">
+        <span class="text-sm text-gray-500 music-status">
           {isPlaying ? "Now playing" : "Music paused"}
         </span>
       </div>
+
+      <style>
+        @media (max-width: 480px) {
+          .audio-controls {
+            bottom: 1.5rem !important;
+            padding: 0.625rem 1rem;
+            gap: 0.5rem;
+          }
+
+          .audio-controls button {
+            width: 2.5rem;
+            height: 2.5rem;
+          }
+
+          .music-status {
+            font-size: 0.8rem;
+          }
+        }
+
+        @media (max-width: 360px) {
+          .audio-controls {
+            bottom: 1rem !important;
+            padding: 0.5rem 0.875rem;
+          }
+
+          .music-status {
+            display: none;
+          }
+        }
+      </style>
     {/if}
   {/if}
 {/if}
