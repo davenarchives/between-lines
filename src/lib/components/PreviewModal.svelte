@@ -181,4 +181,24 @@
             font-size: 1.5rem;
         }
     }
+
+    @media (max-width: 480px) {
+        .preview-backdrop {
+            padding: 1rem;
+        }
+
+        .envelope-img {
+            max-width: 280px;
+            width: 90vw;
+        }
+
+        .recipient-text {
+            font-size: 1.2rem;
+            top: 28%;
+        }
+
+        .letter-content {
+            padding: 1rem;
+        }
+    }
 </style>
