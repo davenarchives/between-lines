@@ -146,4 +146,30 @@
             font-size: 1.125rem;
         }
     }
+
+    @media (max-width: 480px) {
+        .hero-page {
+            padding: 1.5rem 1rem;
+        }
+
+        .hero-logo {
+            max-width: 280px;
+            margin-bottom: 2rem;
+        }
+
+        .hero-tagline {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-button {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            gap: 0.5rem;
+        }
+
+        .plane-icon {
+            font-size: 1rem;
+        }
+    }
 </style>
