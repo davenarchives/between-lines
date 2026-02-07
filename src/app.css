@@ -43,7 +43,8 @@
 }
 
 html {
-  font-size: 16px;
+  /* Fluid font sizing for better mobile responsiveness */
+  font-size: clamp(14px, 2vw, 16px);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -67,6 +68,19 @@ a {
   outline-offset: 2px;
 }
 
+/* Improved touch targets for mobile */
+@media (max-width: 768px) {
+
+  button,
+  a,
+  input,
+  textarea,
+  select {
+    /* Ensure minimum touch target size of 44x44px on mobile */
+    min-height: 44px;
+  }
+}
+
 /* Remove default button styles */
 button {
   font-family: inherit;
@@ -87,4 +101,36 @@ html {
 /* Input placeholder styling */
 ::placeholder {
   color: var(--color-text-subtle);
+}
+
+/* Responsive utility classes */
+.mobile-only {
+  display: block;
+}
+
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none;
+  }
+
+  .desktop-only {
+    display: block;
+  }
+}
+
+/* Prevent zoom on input focus in iOS */
+@media (max-width: 768px) {
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="url"],
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
 }
