@@ -31,9 +31,25 @@
     letterThemeImages[letterTheme] || letterThemeImages["letter-sticky"],
   );
 
-  // Pagination logic
+  // Pagination logic - responsive character limit
   // We use a "cost" system: each character is 1 cost, but newlines are expensive (e.g. 60 chars worth of space)
-  const MAX_COST = 700;
+  let windowWidth = $state(
+    typeof window !== "undefined" ? window.innerWidth : 1024,
+  );
+
+  // Update window width on resize
+  $effect(() => {
+    if (typeof window !== "undefined") {
+      const handleResize = () => {
+        windowWidth = window.innerWidth;
+      };
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  });
+
+  // Responsive character limit: 200 for mobile, 550 for desktop
+  const MAX_COST = $derived(windowWidth <= 480 ? 200 : 550);
   const NEWLINE_COST = 60;
   let currentPage = $state(0);
 
@@ -254,14 +270,15 @@
   @media (max-width: 768px) {
     .nav-arrow {
       font-size: 2rem;
-      background: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.8);
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
     .nav-arrow.prev {
       left: 10px;
@@ -356,39 +373,69 @@
     }
 
     .recipient-text {
-      font-size: 1.4rem;
-      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
     }
 
     .body-text {
-      font-size: 1.1rem;
-      line-height: 1.7;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      text-indent: 1.5rem;
+      margin-bottom: 0.35rem;
     }
 
     .date-text {
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
   }
 
   @media (max-width: 480px) {
+    .letter-display {
+      padding: 2rem 0.5rem 1.5rem 0.5rem;
+    }
+
+    .theme-container {
+      width: 98%;
+    }
+
+    .nav-arrow {
+      font-size: 1.75rem;
+      width: 40px;
+      height: 40px;
+    }
+
+    .nav-arrow.prev {
+      left: 5px;
+    }
+
+    .nav-arrow.next {
+      right: 5px;
+    }
+
     .text-overlay {
-      top: 8%;
-      left: 15%;
-      right: 12%;
-      width: 75%;
+      top: 18%;
+      left: 23%;
+      right: 20%;
+      width: 57%;
       max-width: none;
+      padding: 0.5rem 1rem;
     }
 
     .recipient-text {
-      font-size: 1.2rem;
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
     }
 
     .body-text {
-      font-size: 1rem;
+      font-size: 0.75rem;
+      line-height: 1.45;
+      text-indent: 1.2rem;
+      margin-bottom: 0.3rem;
     }
 
     .date-text {
-      font-size: 1rem;
+      font-size: 0.8rem;
+      margin-top: 1.2rem;
     }
   }
 </style>
