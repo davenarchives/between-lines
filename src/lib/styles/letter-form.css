@@ -298,6 +298,9 @@
 .success-card {
     /* Inherit background from .form-card for consistent look */
     text-align: center;
+    margin: 0 auto;
+    width: 90%;
+    max-width: 500px;
 }
 
 .success-content {
@@ -389,10 +392,140 @@
     color: white;
 }
 
+/* New History Page Design */
+.history-page {
+    min-height: 100vh;
+    max-height: 100vh;
+    background: linear-gradient(135deg, #3986d0 0%, #4c9aae 50%, #659883 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 2rem;
+    gap: 1.25rem;
+    overflow: hidden;
+}
+
+.history-title {
+    font-family: 'Caveat', cursive;
+    font-size: 2.75rem;
+    color: white;
+    font-style: italic;
+    margin: 0;
+    font-weight: 400;
+}
+
+.history-description {
+    font-family: 'Caveat', cursive;
+    font-size: 1.15rem;
+    color: white;
+    text-align: center;
+    max-width: 700px;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.history-box {
+    background: rgba(104, 180, 170, 0.5);
+    backdrop-filter: blur(10px);
+    border: 3px dotted rgba(255, 255, 255, 0.8);
+    border-radius: 16px;
+    padding: 1.5rem 1.5rem;
+    width: 90%;
+    max-width: 700px;
+    max-height: 40vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.history-link-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 0;
+}
+
+.link-text {
+    flex: 1;
+    color: #1f2937;
+    font-size: 0.95rem;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.link-text:hover {
+    color: #111827;
+    text-decoration: underline;
+}
+
+.copy-icon-btn {
+    background: none;
+    border: none;
+    color: #a8c77f;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.copy-icon-btn:hover {
+    color: #8fb365;
+    transform: scale(1.1);
+}
+
+.copy-icon-btn:active {
+    transform: scale(0.95);
+}
+
+.create-new-btn {
+    background: #4c9aff;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 0.75rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(76, 154, 255, 0.4);
+    margin-top: 0.5rem;
+}
+
+.create-new-btn:hover {
+    background: #3b82f6;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+}
+
+.create-new-btn:active {
+    transform: translateY(0);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .form-card {
-        padding: 2rem 1.5rem;
+        padding: 1.75rem 1.25rem;
+        max-width: 100%;
+    }
+
+    .form-content {
+        gap: 1rem;
     }
 
     .theme-selector {
@@ -402,5 +535,173 @@
     .theme-button {
         width: 80px;
         height: 80px;
+    }
+
+    .button-group {
+        gap: 0.75rem;
+    }
+
+    .action-button {
+        padding: 0.875rem;
+        font-size: 1rem;
+    }
+
+    .link-container {
+        flex-direction: row;
+        gap: 0.5rem;
+    }
+
+    .link-input {
+        font-size: 0.85rem;
+        padding: 0.75rem 0.875rem;
+    }
+
+    .copy-button {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        min-width: 50px;
+        width: auto;
+    }
+
+    .success-card {
+        width: 90%;
+        max-width: 420px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-card {
+        padding: 1.5rem 1rem;
+        border-radius: 16px;
+    }
+
+    .form-content {
+        gap: 0.875rem;
+    }
+
+    .form-input {
+        padding: 0.875rem 1.25rem;
+        font-size: 0.95rem;
+    }
+
+    .message-input {
+        height: 160px;
+        font-size: 1.1rem;
+    }
+
+    .theme-selector {
+        gap: 0.4rem;
+        padding: 0.75rem 0;
+    }
+
+    .theme-button {
+        width: 70px;
+        height: 70px;
+        border-radius: 12px;
+    }
+
+    .action-button {
+        padding: 0.875rem;
+        font-size: 0.95rem;
+    }
+
+    .success-title {
+        font-size: 1.75rem;
+    }
+
+    .success-text {
+        font-size: 1rem;
+    }
+
+    .link-input {
+        font-size: 0.85rem;
+        padding: 0.75rem 0.875rem;
+    }
+
+    .new-letter-button {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .button-group {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .action-button {
+        width: 100%;
+    }
+}
+
+/* History Page Responsive */
+@media (max-width: 768px) {
+    .history-page {
+        padding: 2rem 1.5rem;
+        gap: 1.5rem;
+    }
+
+    .history-logo {
+        max-width: 300px;
+    }
+
+    .history-title {
+        font-size: 2.75rem;
+    }
+
+    .history-description {
+        font-size: 1.15rem;
+    }
+
+    .history-box {
+        padding: 2rem 1.5rem;
+    }
+
+    .link-text {
+        font-size: 0.9rem;
+    }
+
+    .create-new-btn {
+        padding: 0.875rem 2.5rem;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .history-page {
+        padding: 1.5rem 1rem;
+    }
+
+    .history-logo {
+        max-width: 250px;
+    }
+
+    .history-title {
+        font-size: 2.25rem;
+    }
+
+    .history-description {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .history-box {
+        padding: 1.5rem 1.25rem;
+    }
+
+    .link-text {
+        font-size: 0.85rem;
+    }
+
+    .copy-icon-btn {
+        font-size: 1.25rem;
+        min-width: 40px;
+        min-height: 40px;
+    }
+
+    .create-new-btn {
+        padding: 0.75rem 2rem;
+        font-size: 1rem;
     }
 }
