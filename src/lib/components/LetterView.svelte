@@ -8,6 +8,10 @@
 
 <script>
   import { fly } from "svelte/transition";
+  import theme1 from "$lib/assets/theme1.png";
+  import theme2 from "$lib/assets/theme2.png";
+  import theme3 from "$lib/assets/theme3.png";
+  import theme4 from "$lib/assets/theme4.png";
 
   // Props using Svelte 5 $props
   let {
@@ -20,10 +24,10 @@
 
   // Map letter theme to image
   const letterThemeImages = {
-    "letter-sticky": "/images/theme1.png",
-    "letter-lined": "/images/theme2.png",
-    "letter-pastel": "/images/theme3.png",
-    "letter-minimal": "/images/theme4.png",
+    "letter-sticky": theme1,
+    "letter-lined": theme2,
+    "letter-pastel": theme3,
+    "letter-minimal": theme4,
   };
 
   const letterBackground = $derived(
@@ -162,7 +166,11 @@
   <article class="letter-display" in:fly={{ y: 50, duration: 800, delay: 300 }}>
     <!-- Theme Background Image -->
     <div class="theme-container">
-      <img src={letterBackground} alt="Letter theme" class="theme-background" />
+      <enhanced:img
+        src={letterBackground}
+        alt="Letter theme"
+        class="theme-background"
+      />
 
       <!-- Text Overlay -->
       <div class="text-overlay {letterTheme}">
@@ -216,7 +224,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding: 3rem 1rem 2rem 1rem;
+    padding: 1.5rem 1rem 0.5rem 1rem;
   }
 
   .theme-container {
