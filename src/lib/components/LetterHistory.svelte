@@ -12,6 +12,7 @@
         getLetterHistory,
         deleteLetterFromHistory,
     } from "$lib/utils/letterStorage";
+    import logo from "$lib/assets/logo.png";
 
     // Props
     let { isVisible = true, onCreateNew } = $props();
@@ -59,7 +60,13 @@
         <!-- Logo -->
         <div class="logo-container">
             <a href="/" aria-label="Go to home">
-                <img src="/images/logo.png" alt="Between Lines" class="logo" />
+                <enhanced:img
+                    src={logo}
+                    alt="Between Lines"
+                    class="logo"
+                    loading="eager"
+                    fetchpriority="high"
+                />
             </a>
         </div>
 
@@ -103,25 +110,13 @@
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
+                                        width="20"
+                                        height="20"
                                         viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
+                                        fill="currentColor"
                                     >
-                                        <rect
-                                            x="9"
-                                            y="9"
-                                            width="13"
-                                            height="13"
-                                            rx="2"
-                                            ry="2"
-                                        />
                                         <path
-                                            d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"
+                                            d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
                                         />
                                     </svg>
                                 </button>
@@ -293,20 +288,19 @@
     .link-item {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 0.75rem;
-        background: rgba(255, 255, 255, 0.15);
-        padding: 0.6rem 1rem;
+        justify-content: center;
+        gap: 0.15rem;
+        background: transparent;
+        padding: 0.5rem 1rem;
         border-radius: 8px;
         transition: background 0.2s ease;
     }
 
     .link-item:hover {
-        background: rgba(255, 255, 255, 0.25);
+        background: transparent;
     }
 
     .link-text {
-        flex: 1;
         color: #2c3e50;
         font-size: 0.95rem;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -317,6 +311,7 @@
         white-space: nowrap;
         text-decoration: underline;
         cursor: pointer;
+        max-width: 600px;
     }
 
     .link-text:hover {
@@ -325,12 +320,14 @@
     }
 
     .copy-btn {
-        background: rgba(255, 255, 255, 0.25);
+        background: #1f2937;
         border: none;
         border-radius: 6px;
         cursor: pointer;
-        padding: 0.5rem;
-        color: #2c3e50;
+        padding: 0;
+        width: 36px;
+        height: 36px;
+        color: white;
         transition: all 0.2s ease;
         flex-shrink: 0;
         display: flex;
@@ -339,7 +336,7 @@
     }
 
     .copy-btn:hover {
-        background: rgba(255, 255, 255, 0.4);
+        background: #374151;
         transform: translateY(-1px);
     }
 
@@ -450,6 +447,7 @@
     @media (max-width: 480px) {
         .overlay {
             padding: 1.5rem 0.75rem;
+            justify-content: center;
         }
 
         .logo-container {
@@ -457,7 +455,7 @@
         }
 
         .logo {
-            max-width: 160px;
+            max-width: 350px;
         }
 
         .title {
@@ -507,9 +505,15 @@
             font-size: 0.9rem;
         }
 
+        .copy-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+        }
+
         .copy-btn svg {
-            width: 22px;
-            height: 22px;
+            width: 16px;
+            height: 16px;
         }
 
         .create-btn {
