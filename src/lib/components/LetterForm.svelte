@@ -10,7 +10,9 @@
     createLetter,
     generateShareableUrl,
   } from "$lib/utils/letterService.js";
+  import { saveLetterToHistory } from "$lib/utils/letterStorage.js";
   import "$lib/styles/letter-form.css";
+  import LetterHistory from "$lib/components/LetterHistory.svelte";
   import PreviewModal from "$lib/components/PreviewModal.svelte";
   import SpotifySearch from "$lib/components/SpotifySearch.svelte";
 
@@ -65,6 +67,10 @@
       // Generate shareable link
       const link = generateShareableUrl(letterId);
       shareableLink = link;
+
+      // Save to history
+      saveLetterToHistory(letterId, link, recipientName.trim() || "Anonymous");
+
       isSubmitted = true;
     } catch (error) {
       console.error("Error creating letter:", error);
@@ -100,30 +106,7 @@
 </script>
 
 {#if isSubmitted}
-  <!--Success State -->
-  <div class="form-card success-card">
-    <div class="success-content">
-      <i class="fa-solid fa-circle-check success-icon"></i>
-      <h2 class="success-title">Letter Created!</h2>
-      <p class="success-text">Share this link with your recipient:</p>
-
-      <div class="link-container">
-        <input type="text" readonly value={shareableLink} class="link-input" />
-        <button
-          type="button"
-          onclick={copyToClipboard}
-          class="copy-button"
-          aria-label="Copy link to clipboard"
-        >
-          <i class="fa-solid fa-copy"></i>
-        </button>
-      </div>
-
-      <button type="button" onclick={resetForm} class="new-letter-button">
-        Create Another Letter
-      </button>
-    </div>
-  </div>
+  <LetterHistory isVisible={true} onCreateNew={resetForm} />
 {:else}
   <!-- Letter Form -->
   <form class="form-card" onsubmit={handleSubmit}>
