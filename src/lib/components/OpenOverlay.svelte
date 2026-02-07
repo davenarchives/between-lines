@@ -8,6 +8,11 @@
 
 <script>
   import { fade } from "svelte/transition";
+  import logo from "$lib/assets/logo.png";
+  import envelope1 from "$lib/assets/envelope1.png";
+  import envelope2 from "$lib/assets/envelope2.png";
+  import envelope3 from "$lib/assets/envelope3.png";
+  import envelope4 from "$lib/assets/envelope4.png";
 
   // Props using Svelte 5 $props
   let {
@@ -19,10 +24,10 @@
 
   // Map envelope theme to image number
   const envelopeImages = {
-    "envelope-red": "/images/envelope1.png",
-    "envelope-pink": "/images/envelope2.png",
-    "envelope-green": "/images/envelope3.png",
-    "envelope-blue": "/images/envelope4.png",
+    "envelope-red": envelope1,
+    "envelope-pink": envelope2,
+    "envelope-green": envelope3,
+    "envelope-blue": envelope4,
   };
 
   const envelopeImageSrc = $derived(
@@ -36,7 +41,13 @@
     <!-- Logo (Mobile Only) -->
     <div class="logo-container">
       <a href="/" aria-label="Go to home">
-        <img src="/images/logo.png" alt="Between Lines" class="logo" />
+        <enhanced:img
+          src={logo}
+          alt="Between Lines"
+          class="logo"
+          loading="eager"
+          fetchpriority="high"
+        />
       </a>
     </div>
 
@@ -48,7 +59,13 @@
       onkeydown={(e) => e.key === "Enter" && onopen()}
     >
       <!-- Envelope Image -->
-      <img src={envelopeImageSrc} alt="Envelope" class="envelope-image" />
+      <enhanced:img
+        src={envelopeImageSrc}
+        alt="Envelope"
+        class="envelope-image"
+        loading="eager"
+        fetchpriority="high"
+      />
 
       <!-- Recipient Name on Letter Inside Envelope -->
       {#if recipientName}
