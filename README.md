@@ -55,9 +55,7 @@ The application is built for performance and user experience using a modern serv
 - **Database**: Firebase Firestore
 - **Authentication/Storage**: Firebase SDK
 
-## 📄 License
 
-This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
@@ -65,24 +63,19 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ### Desktop View
 
+<div align="center">
+  <img src="static/screenshots/image-12.png" alt="Dashboard" width="100%" style="border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
+  <p><b>Dashboard</b></p>
+</div>
+
+<br/>
+
 <table style="width:100%; text-align:center;">
   <tr>
-    <td style="width:50%;">
-      <img src="static/screenshots/image-12.png" alt="Dashboard" width="100%" />
-      <br/>
-      <b>Dashboard</b>
-    </td>
     <td style="width:50%;">
       <img src="static/screenshots/image-6.png" alt="Letter Preview" width="100%" />
       <br/>
       <b>Letter Preview</b>
-    </td>
-  </tr>
-  <tr>
-    <td style="width:50%;">
-      <img src="static/screenshots/image-7.png" alt="Envelope Selection" width="100%" />
-      <br/>
-      <b>Envelope Selection</b>
     </td>
     <td style="width:50%;">
       <img src="static/screenshots/image-8.png" alt="Writing Experience" width="100%" />
@@ -92,24 +85,52 @@ This project is open source and available under the [MIT License](LICENSE).
   </tr>
   <tr>
     <td style="width:50%;">
+      <img src="static/screenshots/image-7.png" alt="Envelope Selection" width="100%" />
+      <br/>
+      <b>Envelope Selection</b>
+    </td>
+    <td style="width:50%;">
       <img src="static/screenshots/image-9.png" alt="Opening Animation" width="100%" />
       <br/>
       <b>Opening Animation</b>
     </td>
+  </tr>
+  <tr>
     <td style="width:50%;">
       <img src="static/screenshots/image-10.png" alt="Theme Gallery" width="100%" />
       <br/>
       <b>Theme Gallery</b>
     </td>
-  </tr>
-  <tr>
     <td style="width:50%;">
-      <img src="static/screenshots/image-11.png" alt="Mobile View" width="100%" />
+      <img src="static/screenshots/image-11.png" alt="Responsive View" width="100%" />
       <br/>
-      <b>Mobile View</b>
-    </td>
-    <td>
-      <!-- Empty cell for alignment if needed, or add more screenshots -->
+      <b>Responsive View</b>
     </td>
   </tr>
 </table>
+
+### Mobile Experience
+
+<table style="width:100%; text-align:center;">
+  <tr>
+    <td style="width:33%;">
+      <img src="static/screenshots/mobileview.png" alt="Mobile Dashboard" width="100%" />
+      <br/>
+      <b>Dashboard</b>
+    </td>
+    <td style="width:33%;">
+      <img src="static/screenshots/mobileviewpreview1.png" alt="Mobile Preview" width="100%" />
+      <br/>
+      <b>Preview</b>
+    </td>
+    <td style="width:33%;">
+      <img src="static/screenshots/mobileviewoutput2.png" alt="Mobile Letter" width="100%" />
+      <br/>
+      <b>Letter View</b>
+    </td>
+  </tr>
+</table>
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
