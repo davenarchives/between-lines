@@ -7,6 +7,15 @@ const STORAGE_KEY = 'betweenLinesHistory';
 const EXPIRATION_DAYS = 7;
 
 /**
+ * @typedef {Object} LetterHistoryItem
+ * @property {string} id
+ * @property {string} link
+ * @property {string} recipientName
+ * @property {number} createdAt
+ * @property {number} expiresAt
+ */
+
+/**
  * Save a new letter to history
  * @param {string} letterId - Unique letter ID
  * @param {string} link - Full URL to the letter
@@ -45,7 +54,7 @@ export function saveLetterToHistory(letterId, link, recipientName) {
 
 /**
  * Get all letters from history (auto-removes expired entries)
- * @returns {Array<{id: string, link: string, recipientName: string, createdAt: number, expiresAt: number}>} Array of letter objects
+ * @returns {LetterHistoryItem[]} Array of letter objects
  */
 export function getLetterHistory() {
     try {
@@ -54,6 +63,7 @@ export function getLetterHistory() {
             return [];
         }
 
+        /** @type {LetterHistoryItem[]} */
         const history = JSON.parse(stored);
 
         // Filter out expired letters
